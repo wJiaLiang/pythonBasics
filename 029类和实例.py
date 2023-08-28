@@ -17,9 +17,10 @@ Python采用多继承机制，一个类可以同时继承多个父类（也叫�
 
 # 下面是一个学生类：
 
+
 class Student:
     classroom = '101'
-    address = 'beijing' 
+    address = 'beijing'
 
     def __init__(self, name, age):
         self.name = name
@@ -27,6 +28,7 @@ class Student:
 
     def print_age(self):
         print('%s: %s' % (self.name, self.age))
+
 
 """  
 可以通过调用类的实例化方法（有的语言中也叫初始化方法或构造函数）来创建一个类的实例。
@@ -50,10 +52,10 @@ li.print_age()
 # 类变量：
 # 定义在类中，方法之外的变量，称作类变量。类变量是所有实例公有的变量，每一个实例都可以访问、修改类变量。
 # 在Student类中，classroom和address两个变量就是类变量。可以通过类名或者实例名加圆点的方式访问类变量，比如：
-print(Student.classroom) # 101
-print(Student.address) # beijing 
+print(Student.classroom)  # 101
+print(Student.address)  # beijing
 print(li.classroom)  # 101
-print(zhang.address) #beijing
+print(zhang.address)  # beijing
 
 """  
 # 在使用实例变量和类变量的时候一定要注意，使用类似zhang.name访问变量的时候，
@@ -69,7 +71,54 @@ Python动态语言的特点，让我们可以随时给实例添加新的实例�
 
 # 类的方法：
 
+# Python的类中包含实例方法、静态方法和类方法三种方法。
+# 这些方法无论是在代码编排中还是内存中都归属于类，区别在于传入的参数和调用方式不同。在类的内部，使用def关键字来定义一个方法。
+
+# 1、实例方法:
+# 类的实例方法由实例调用，至少包含一个self参数，且为第一个参数。执行实例方法时，会自动将调用该方法的实例赋值给self。
+# self代表的是类的实例，而非类本身。self不是关键字，而是Python约定成俗的命名，你完全可以取别的名字，但不建议这么做。
 
 
+class F1:
+    def ord_func(self):
+        """定义实例方法，至少有一个self参数 """
+        print('实例方法')
+
+
+zz = F1()
+zz.ord_func()
+
+# 2、静态方法
+# 静态方法由类调用，无默认参数。将实例方法参数中的self去掉，然后在方法定义上方加上@staticmethod，就成为静态方法。它属于类，和实例无关。
+# 建议只使用类名.静态方法的调用方式。（虽然也可以使用实例名.静态方法的方式调用）
+
+
+class Foo:
+    @staticmethod
+    def static_method():
+        print("静态方法")
+
+
+Foo.static_method()
+
+# 3、类方法
+# 类方法由类调用，采用@classmethod装饰，至少传入一个cls（代指类本身，类似self）参数。执行类方法时，自动将调用该方法的类赋值给cls。
+# 建议只使用类名.类方法的调用方式。（虽然也可以使用实例名.类方法的方式调用）
+
+
+class Foo1:
+    @classmethod
+    def class_method(cls):
+        print("类方法")
+
+
+Foo1.class_method()
+
+
+# 类、类的方法、类变量、类的实例和实例变量在内存中是如何保存的？
+# 类、类的所有方法以及类变量在内存中只有一份，所有的实例共享它们。而每一个实例都在内存中独立的保存自己和自己的实例变量。
+
+# 创建实例时，实例中除了封装诸如name和age的实例变量之外，还会保存一个类对象指针，该值指向实例所属的类的地址。
+# 因此，实例可以寻找到自己的类，并进行相关调用，而类无法寻找到自己的某个实例。
 
 
