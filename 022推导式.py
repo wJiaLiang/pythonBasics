@@ -1,6 +1,9 @@
 """  
 Python语言有一种独特的推导式语法，相当于语法糖的存在，可以帮你在某些场合写出比较精简酷炫的代码。
 但没有它，也不会有太多的影响。Python语言有几种不同类型的推导式，下面逐一介绍：
+
+Python 推导式是一种独特的数据处理方式，可以从一个数据序列构建另一个新的数据序列的结构体。
+
 """
 
 # 1. 列表推导式
@@ -38,6 +41,7 @@ print(a) # {'d', 'r'}
 tup = (x for x in range(9))
 print(tup)    # <generator object <genexpr> at 0x000001AFE01E8430
 print(type(tup))  # <class 'generator'>
+tuple(tup)
 
 # 要通过类似方法生成元组，需要显式调用元组的类型转换函数tuple()，如下所示：
 tup2 = tuple(x for x in range(9))
