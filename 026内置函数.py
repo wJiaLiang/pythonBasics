@@ -26,48 +26,52 @@ print("\n")
 # 所以，内置函数不是Python关键字，要注意对它们的保护，不要使用和内置函数重名的变量名，这会让代码混乱，容易发生难以排查的错误。
 
 # 绝对值函数
-# abs() 
+# abs()
 
 # 接收一个可迭代对象，如果对象里的所有元素的bool运算值都是True，那么返回True，否则False。不要小瞧了这个函数，如果all函数中的可迭代对象是空的，直接返回True。
-# all() 
+# all()
 
 # 接收一个可迭代对象，如果迭代对象里有一个元素的bool运算值是True，那么返回True，否则False。与all()是一对兄弟。
 # any()
 
-print(all([])) # True
-print(any([])) # False
+print(all([]))  # True
+print(any([]))  # False
 
 # 调用对象的__repr__()方法，获得该方法的返回值。__repr__()方法是由对象所属类型实现的方法。不可以简单地理解为print或echo。
 # 返回一个表示对象的字符串, 但是对于字符串中的非 ASCII 字符则返回通过 repr() 函数使用 \x, \u 或 \U 编码的字符
 # ascii()
-s = [1,2,3]
-print(ascii(all)) # <built-in function all>
+s = [1, 2, 3]
+print(ascii(all))  # <built-in function all>
 
 # bin()、oct()、hex()
 # 三个函数是将十进制数分别转换为2/8/16进制。
 i = 10
-print(bin(i)) # 0b1010
-print(oct(i)) # 0o12
-print(hex(i)) # 0xa
+print(bin(i))  # 0b1010
+print(oct(i))  # 0o12
+print(hex(i))  # 0xa
 
 # 测试一个对象或表达式的执行结果是True还是False。
-bool(1==3)
+bool(1 == 3)
 
 # 实例化一个bytearray类型的对象。参数可以是字符串、整数或者可迭代对象。返回一个新的字节数组
-aa = bytearray("张三",encoding='utf-8')
-print(aa) #bytearray(b'\xe5\xbc\xa0\xe4\xb8\x89')
+aa = bytearray("张三", encoding='utf-8')
+print(aa)  # bytearray(b'\xe5\xbc\xa0\xe4\xb8\x89')
 
 # 将对象转换成字节类型。例如：s = '张三';m = bytes(s,encoding='utf-8')
-aa1 = bytes('张三',encoding='utf-8')
-print(aa1) # b'\xe5\xbc\xa0\xe4\xb8\x89'
+aa1 = bytes('张三', encoding='utf-8')
+print(aa1)  # b'\xe5\xbc\xa0\xe4\xb8\x89'
 
 
 # 将对象转换成字符串类型，同样也可以指定编码方式。例如：str(bytes对象，encoding='utf-8')
 print(str(23))        # '23'
-print(str([1,2,3]))   # '[1, 2, 3]'
+print(str([1, 2, 3]))   # '[1, 2, 3]'
 
 # 判断对象是否可以被调用。如果某个对象具有__call__方法，那它就能被调用。 例如，def f1(): pass,那么callable(f1)返回True。
-def ff():pass
+
+
+def ff(): pass
+
+
 ff1 = "abc"
 print(callable(ff1))  # False
 print(callable(ff))   # True
@@ -83,8 +87,8 @@ print(callable(ff))   # True
 
 # 将字符串编译成Python能识别或执行的代码。 也可以将文件读成字符串再编译。
 # compile()
-s  = "print('helloworld')"
-r = compile(s,"<string>","exec")
+s = "print('helloworld')"
+r = compile(s, "<string>", "exec")
 # r()
 exec(r)  # helloworld
 
@@ -103,20 +107,20 @@ dir()
 
 
 # divmod 除法，同时返回商和余数的元组。
-divmod(10,3) # (3,1)
+divmod(10, 3)  # (3,1)
 
 # 枚举函数，在迭代对象的时候，额外提供一个序列号的输出。
 # enumerate(li,1)中的1表示从1开始序号，默认从0开始。注意，第二个参数才是你想要的序号开始，不是第一个参数
-lis = {"a":9,"b":8,"c":7}
-enumerate(lis,1)
+lis = {"a": 9, "b": 8, "c": 7}
+enumerate(lis, 1)
 
 for i, key in enumerate(lis, 5):
-    print(i,"\t",key)
+    print(i, "\t", key)
 
 # 将字符串直接解读并执行。例如：s = "6*8"，s是一个字符串，d = eval(s)， d的结果是48。
 # eval()
 
-# 执行字符串或compile方法编译过的字符串，没有返回值。 
+# 执行字符串或compile方法编译过的字符串，没有返回值。
 # exec()
 
 # 执行format()，其实就是调用该对象所属类的__format__方法。类似print功能。
@@ -128,7 +132,7 @@ for i, key in enumerate(lis, 5):
 
 # 为不可变对象，例如字符串生成哈希值的函数！
 # hash()
-hash("hello py") #5094071384489611808
+hash("hello py")  # 5094071384489611808
 
 
 # 返回对象的帮助文档。谁用谁知道！
@@ -144,6 +148,22 @@ hash("hello py") #5094071384489611808
 
 # 判断一个对象是否是某个类的实例。比type()方法适用面更广。
 # isinstance("haha", str)
+isinstance("haha", str)  # 判断是否是字符串
+
+A = 123
+B = [123, 'A']
+C = {'A': 123, 'B': 45}
+D = 1.23
+E = 'abc'
+
+isinstance(A, int)   # True
+isinstance(B, list)  # True
+isinstance(C, dict)  # True
+isinstance(D, float)  # True
+isinstance(E, str)   # True
+
+type(A) == type(1)   # True
+type(B) == type([])  # True
 
 # issubclass(a，b),判断a是否是b的子类。
 # issubclass()
@@ -167,7 +187,7 @@ hash("hello py") #5094071384489611808
 
 # 返回obj的内存视图对象。obj只能是bytes或bytesarray类型。memoryview对象的使用方法如下：
 v = memoryview(b'abcefg')
-print(v[0]) #97
+print(v[0])  # 97
 
 
 # 通过调用迭代器的__next__()方法，获取下一个元素。
@@ -181,15 +201,15 @@ print(v[0]) #97
 # open()
 
 # 幂函数。
-pow(3, 2) #9
+pow(3, 2)  # 9
 
 
 # 调用对象所属类的__repr__方法，与print功能类似。
 # repr()
 
 # 反转，逆序对象
-a = reversed([1,2,3,4,5])
-list(a) # 使用list方法将它转换为一个列表   [5, 4, 3, 2, 1]
+a = reversed([1, 2, 3, 4, 5])
+list(a)  # 使用list方法将它转换为一个列表   [5, 4, 3, 2, 1]
 
 
 # 四舍五入
@@ -218,9 +238,9 @@ lis2[s]  # lis[s]
 
 # 映射函数。使用指定的函数，处理可迭代对象，并将结果保存在一个map对象中，本质上和大数据的mapreduce中的map差不多。
 # map()
-li = [1,2,3]
-data = map(lambda x :x*100,li)  # 这里直接使用了一个匿名函数
-print(list(data)) #[100, 200, 300]      # 返回值是一个map对象，它是个迭代器。
+li = [1, 2, 3]
+data = map(lambda x: x*100, li)  # 这里直接使用了一个匿名函数
+print(list(data))  # [100, 200, 300]      # 返回值是一个map对象，它是个迭代器。
 
 
 # 过滤器，用法和map类似。在函数中设定过滤的条件，逐一循环对象中的元素，将返回值为True时的元素留下（注意，不是留下返回值！），形成一个filter类型的迭代器
@@ -230,37 +250,35 @@ def f11(x):
         return True
     else:
         return False
-li11 = [1,2,3,4,5]
-data11 = filter(f11,li11)
-print(list(data11)) # [4,5]
+
+
+li11 = [1, 2, 3, 4, 5]
+data11 = filter(f11, li11)
+print(list(data11))  # [4,5]
 
 
 # 组合对象。将对象逐一配对。那么如果对象的长度不一致呢？多余的会被抛弃！以最短的为基础！
 # zip()
-list_1 = [1,2,3]
-list_2 = ['a','b','c']
-s = zip(list_1,list_2)
-print(list(s)) # [(1, 'a'), (2, 'b'), (3, 'c')]
+list_1 = [1, 2, 3]
+list_2 = ['a', 'b', 'c']
+s = zip(list_1, list_2)
+print(list(s))  # [(1, 'a'), (2, 'b'), (3, 'c')]
 
 
 # sorted() 排序 有key和reverse两个重要参数。 有key和reverse两个重要参数。
-sorted([36, 5, -12, 9, -21]) # [-21, -12, 5, 9, 36]
+sorted([36, 5, -12, 9, -21])  # [-21, -12, 5, 9, 36]
 # 指定排序的关键字。关键字必须是一个可调用的对象。例如下面的例子，规则是谁的绝对值大，谁就排在后面
-sorted([36, 5, -12, 9, -21], key=abs) #[5, 9, -12, -21, 36]
+sorted([36, 5, -12, 9, -21], key=abs)  # [5, 9, -12, -21, 36]
 
 # 指定按反序排列。下面的例子，首先按忽略大小写的字母顺序排序，然后倒序排列。
-sorted(['bob', 'about', 'Zoo', 'Credit'], key=str.lower, reverse=True) #['Zoo', 'Credit', 'bob', 'about']
+sorted(['bob', 'about', 'Zoo', 'Credit'], key=str.lower,
+       reverse=True)  # ['Zoo', 'Credit', 'bob', 'about']
 
 
 # 这个方法为我们提供了一种通过字符串反射包、库或模块的手段。其中的name是你想要导入的库的名称的字符串。
 # __import__(name)
 
 t = __import__("time")
-print(t.time()) # 时间戳 多少秒 1693123472.2509053
+print(t.time())  # 时间戳 多少秒 1693123472.2509053
 
 # 利用字符串“time”，导入了实际的time库，并赋值给t变量。这个变量实际就相当于import time的结果。然后使用t.time()进行调用。
-
-
-
-
-

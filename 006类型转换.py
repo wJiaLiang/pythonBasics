@@ -33,7 +33,7 @@ w1 = float("4.2")  # w 输出结果为 4.2
 print(a1, b1, x1, y1, z1)
 
 # str() 强制转换为字符串类型：
-a2 = str(True)  # 'True'
+a2 = str(True)   # 'True'
 b2 = str(False)  # 'False'
 x2 = str("s1")  # x 输出结果为 's1'
 y2 = str(2)    # y 输出结果为 '2'
@@ -50,7 +50,7 @@ complex(real [,imag])   创建一个复数
 str(x)                  将对象 x 转换为字符串
 repr(x)                 将对象 x 转换为表达式字符串
 eval(str)               用来计算在字符串中的有效Python表达式,并返回一个对象
-tuple(s)                tuple(s)
+tuple(s)                将列表转换成元组
 list(s)                 将序列 s 转换为一个列表
 set(s)                  转换为可变集合
 dict(d)                 创建一个字典。d 必须是一个 (key, value)元组序列。
@@ -63,3 +63,26 @@ oct(x)                  将一个整数转换为一个八进制字符串
 
 
 """
+print("====================================")
+
+# 数据类型判断与比较
+# python中，判断某变量的数据类型是否为字符串，可用isinstance()函数，也可通过比较 type(x) == type(‘a’)的值来判断。
+A = 123
+B = [123, 'A']
+C = {'A': 123, 'B': 45}
+D = 1.23
+E = 'abc'
+F = ('192.168.10.1', '8888')
+j = set([1, 1, 2, 3, 3, 4])
+
+isinstance(A, int)  # True
+isinstance(B, list)  # True
+isinstance(C, dict)  # True
+isinstance(D, float)  # True
+isinstance(E, str)  # True
+print(isinstance(F, tuple))  # True
+print(isinstance(j, set))  # True
+
+print(type(A) == type(1))   # True
+print(type(B) == type([]))  # True
+print(type(E) == type(1))   # False
