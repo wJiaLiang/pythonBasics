@@ -1,5 +1,5 @@
 """  
-几乎所有的正式代码中，我们都需要与时间打交道。在Python中，与时间处理有关的模块包括time，datetime以及calendar，本节主要讲解time模块。
+几乎所有的正式代码中，我们都需要与时间打交道。在Python中，与时间处理有关的模块包括time，datetime以及calendar，
 
 在Python中，用三种方式来表示时间，分别是时间戳、格式化时间字符串和结构化时间
 
@@ -21,7 +21,8 @@
 使用time.localtime()等方法可以获得一个结构化时间元组。
 """
 import time
-print(time.localtime()) #time.struct_time(tm_year=2023, tm_mon=9, tm_mday=3, tm_hour=13, tm_min=19, tm_sec=23, tm_wday=6, tm_yday=246, tm_isdst=0)
+# time.struct_time(tm_year=2023, tm_mon=9, tm_mday=3, tm_hour=13, tm_min=19, tm_sec=23, tm_wday=6, tm_yday=246, tm_isdst=0)
+print(time.localtime())
 
 # 结构化时间元组共有9个元素，按顺序排列如下表：
 
@@ -42,11 +43,10 @@ print(time.localtime()) #time.struct_time(tm_year=2023, tm_mon=9, tm_mday=3, tm_
 # 但是要记住，Python的time类型是不可变类型，所有的时间值都只读，不能改！！
 
 
-
 # 二、 格式化时间字符串
 # 利用time.strftime('%Y-%m-%d %H:%M:%S')等方法可以获得一个格式化时间字符串。
 t = time.strftime('%Y-%m-%d %H:%M:%S')
-print(t) # 2023-09-03 13:22:19
+print(t)  # 2023-09-03 13:22:19
 # 注意其中的空格、短横线和冒号都是美观修饰符号，真正起控制作用的是百分符。对于格式化控制字符串"%Y-%m-%d %H:%M:%S，
 # 其中每一个字母所代表的意思如下表所示，注意大小写的区别：
 
@@ -124,7 +124,7 @@ st  = time.strptime(stime,"%Y-%m-%d %H:%M:%S")
 
 
 """
-print( time.ctime() )
+print(time.ctime())
 
 
 # 四、 时间格式之间的转换

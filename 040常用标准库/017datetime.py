@@ -51,21 +51,25 @@ day	    [1, 指定年份的月份中的天数]
 
 
 """
-import time
 import datetime
-instanced = datetime.date(2023,9,3)
-print(instanced) # 2030-11-20
-  
+print(datetime.datetime.now())  # 获取当前日期和时间 2023-11-08 21:58:00.048240
+current_datetime = datetime.datetime.now()
+print(current_datetime.strftime("%Y-%m-%d %H"))  # 格式化日期 2023-11-08 21
+print(datetime.date.today())  # 获取当前日期 2023-11-08
+print('-----------------------------------------')
+instanced = datetime.date(2023, 9, 3)
+print(instanced)  # 2023-09-03
+
 print(datetime.date.max)
 print(datetime.date.min)
-print(datetime.date.today())
+print(datetime.date.today())  # 当前的日期
 
 print("--------实例属性和方法--------------")
 print(instanced.year)
 print(instanced.month)
 print(instanced.day)
 print(instanced.isoformat())
-print(instanced.weekday()) # 返回日期是星期几，[0, 6]，0表示星期一
+print(instanced.weekday())  # 返回日期是星期几，[0, 6]，0表示星期一
 
 
 # 二、 datetime.time类
@@ -96,10 +100,10 @@ t.isoformat()	    返回一个‘HH:MM:SS.%f’格式的时间字符串
 t.strftime()	    返回指定格式的时间字符串，与time模块的strftime(format, struct_time)功能相同
 """
 print("============================")
-t = datetime.time(10,22,30)
-print(datetime.time.resolution) #0:00:00.000001
-print(datetime.time.max) #23:59:59.999999
-print(t.hour) #10
+t = datetime.time(10, 22, 30)
+print(datetime.time.resolution)  # 0:00:00.000001
+print(datetime.time.max)  # 23:59:59.999999
+print(t.hour)  # 10
 print(t.minute)
 print(t.second)
 print(t.microsecond)
@@ -126,8 +130,8 @@ td.total_seconds()	                     时间差中包含的总秒数，等价�
 
 
 """
-dt = datetime.datetime.now()            #当前时间
+dt = datetime.datetime.now()  # 当前时间
 tt = datetime.timedelta(3)              # 3天后
 print(dt + tt)  # 2023-09-06 16:20:15.367589
 dd = datetime.timedelta(hours=-3)       # 3小时前
-print(dt+dd)               #  2023-09-03 13:21:22.532971
+print(dt+dd)  # 2023-09-03 13:21:22.532971
