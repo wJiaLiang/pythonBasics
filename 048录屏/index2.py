@@ -35,9 +35,21 @@ def record_audio():
      #等待摄像头启动好，然后大家一起等3秒开始录制
     event.wait()
     sleep(3)
-     # 创建输入流
 
-    stream = p.open(format=FORMAT, channels=CHANNELS,rate=RATE, input=True, frames_per_buffer=CHUNK_SIZE)
+    # 获取声音设备
+    input_device_index = -1
+    for i in range(p.get_device_count()):
+        dev = p.get_device_info_by_index(i)
+        print("==>",dev)
+        if '立体声混音' in dev['name']:
+            input_device_index = i
+            break
+        else:
+            input_device_index = -1
+            print("无法录制扬声器声音")
+            return 
+    # 创建输入流
+    stream = p.open(format=FORMAT,input_device_index=input_device_index, channels=CHANNELS,rate=RATE, input=True, frames_per_buffer=CHUNK_SIZE)
     wf = wave.open(audio_filename, 'wb')
     wf.setnchannels(CHANNELS)
     wf.setsampwidth(p.get_sample_size(FORMAT))
