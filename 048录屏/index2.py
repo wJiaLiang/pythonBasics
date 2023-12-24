@@ -10,6 +10,7 @@ import cv2
 from moviepy.editor import *
 import os
 import win32api
+import time
 
 
 CHUNK_SIZE = 1024
@@ -30,26 +31,40 @@ def imshow(frame):
     cv2.imshow('v', frame)
     cv2.waitKey(40)
 
+def record_audio2():
+    # 实例化相关的对象
+    p = pyaudio.PyAudio()
+    event.wait()
+    sleep(3)
+    # 打开相关的流，然后传入响应参数
+    stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK_SIZE)
+    # 打开wav文件
+    wf = wave.open(audio_filename, 'wb')
+    # 设置相关的声道
+    wf.setnchannels(CHANNELS)
+    # 设置采样位数
+    wf.setsampwidth(p.get_sample_size((FORMAT)))
+    # 设置采样频率
+    wf.setframerate(RATE)
+
+    while allowRecording:
+        data = stream.read(CHUNK_SIZE)
+        # 写入数据
+        wf.writeframes(data)
+    
+    # 关闭流
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
+    wf.close()
+
 def record_audio():
     p = pyaudio.PyAudio()
      #等待摄像头启动好，然后大家一起等3秒开始录制
     event.wait()
     sleep(3)
-
-    # 获取声音设备
-    input_device_index = -1
-    for i in range(p.get_device_count()):
-        dev = p.get_device_info_by_index(i)
-        print("==>",dev)
-        if '立体声混音' in dev['name']:
-            input_device_index = i
-            break
-        else:
-            input_device_index = -1
-            print("无法录制扬声器声音")
-            return 
     # 创建输入流
-    stream = p.open(format=FORMAT,input_device_index=input_device_index, channels=CHANNELS,rate=RATE, input=True, frames_per_buffer=CHUNK_SIZE)
+    stream = p.open(format=FORMAT, channels=CHANNELS,rate=RATE, input=True, frames_per_buffer=CHUNK_SIZE)
     wf = wave.open(audio_filename, 'wb')
     wf.setnchannels(CHANNELS)
     wf.setsampwidth(p.get_sample_size(FORMAT))
@@ -59,10 +74,11 @@ def record_audio():
          data = stream.read(CHUNK_SIZE)     
          wf.writeframes(data)
 
-    wf.close()
     stream.stop_stream()
     stream.close()
     p.terminate()
+    wf.close()
+
     
 def record_screen():
      # 录制屏幕
@@ -95,49 +111,56 @@ def record_webcam():
     aviFile.release()
     cap.release()
 
-now = str(datetime.now())[:19].replace(":", "_")
-audio_filename = f'./video/{now}.mp3'
-# webcam_video_filename = f'./video/t{now}.avi'
-screen_video_filename = f'./video/tt{now}.avi'
-video_filename = f'./video/{now}.avi'
-# 创建两个线程， 分别录音与录屏
-t1 = threading.Thread(target=record_audio)
-t2 = threading.Thread(target=record_screen)
-# t3 = threading.Thread(target=record_webcam)
+if __name__ == '__main__':
+    now = str(datetime.now())[:19].replace(":", "_")
+    audio_filename = f'./video/{now}.mp3'
+    # webcam_video_filename = f'./video/t{now}.avi'
+    screen_video_filename = f'./video/tt{now}.avi'
+    video_filename = f'./video/{now}.avi'
+    # 创建两个线程， 分别录音与录屏
+    t1 = threading.Thread(target=record_audio)
+    t2 = threading.Thread(target=record_screen)
+    # t3 = threading.Thread(target=record_webcam)
 
-# 创建时间，用户多个线程同步，等摄像头准备以后再一起等3秒开始录制
-event.clear()
-event.set()
-# for t in (t1, t2, t3):
-for t in (t1, t2):
-    t.start()
+    # 创建时间，用户多个线程同步，等摄像头准备以后再一起等3秒开始录制
+    event.clear()
 
-# 等待摄像头准备好，提示用户3秒钟以后开始录制
-event.wait()
-print('3秒后开始录制，按q键结束录制')
+    print("按s键,回车后开始录制", time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
+    if input() == 's':
+        event.set()
+    # for t in (t1, t2, t3):
+    for t in (t1, t2):
+        t.start()
 
-while True:
-    if input() == 'q':
-        break
 
-allowRecording = False
-# for t in (t1, t2, t3):
-for t in (t1, t2):
-    t.join()
+    # 等待摄像头准备好，提示用户3秒钟以后开始录制
+    event.wait()
+    print('再在录制中...')
+    print('按q键结束录制')
 
-# 把录制的音频和屏幕截图合成视频文件
-audio = AudioFileClip(audio_filename)
-video1 = VideoFileClip(screen_video_filename)
-ratio1 = audio.duration/video1.duration
-video1 = (video1.fl_time(lambda t: t/ratio1, apply_to=['video']).set_end(audio.duration))
-# video2 = VideoFileClip(webcam_video_filename)
-# ratio2 = audio.duration/video2.duration
-# video2 = (video2.fl_time(lambda t: t/ratio2, apply_to=['video'])).set_end(audio.duration).resize((320, 240)).set_position(('right','bottom'))
-# video = CompositeVideoClip([video1, video2]).set_audio(audio)
-video = CompositeVideoClip([video1]).set_audio(audio)
-video.write_videofile(video_filename, codec='libx264', fps=25)
+    while True:
+        if input() == 'q':
+            print('录制结束',time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
+            break
 
-# 删除历史音频文件和视频
-remove(audio_filename)
-remove(screen_video_filename)
-# remove(webcam_video_filename)
+    allowRecording = False
+    # for t in (t1, t2, t3):
+    for t in (t1, t2):
+        t.join()
+
+    # 把录制的音频和屏幕截图合成视频文件
+    audio = AudioFileClip(audio_filename)
+    video1 = VideoFileClip(screen_video_filename)
+    ratio1 = audio.duration/video1.duration
+    video1 = (video1.fl_time(lambda t: t/ratio1, apply_to=['video']).set_end(audio.duration))
+    # video2 = VideoFileClip(webcam_video_filename)
+    # ratio2 = audio.duration/video2.duration
+    # video2 = (video2.fl_time(lambda t: t/ratio2, apply_to=['video'])).set_end(audio.duration).resize((320, 240)).set_position(('right','bottom'))
+    # video = CompositeVideoClip([video1, video2]).set_audio(audio)
+    video = CompositeVideoClip([video1]).set_audio(audio)
+    video.write_videofile(video_filename, codec='libx264', fps=30)
+
+    # 删除历史音频文件和视频
+    remove(audio_filename)
+    remove(screen_video_filename)
+    # remove(webcam_video_filename)
