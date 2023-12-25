@@ -158,7 +158,7 @@ if __name__ == '__main__':
     # video2 = (video2.fl_time(lambda t: t/ratio2, apply_to=['video'])).set_end(audio.duration).resize((320, 240)).set_position(('right','bottom'))
     # video = CompositeVideoClip([video1, video2]).set_audio(audio)
     video = CompositeVideoClip([video1]).set_audio(audio)
-    video.write_videofile(video_filename, codec='libx264', fps=30)
+    video.write_videofile(video_filename, codec='libx264',threads = 10, fps=30)
 
     # 删除历史音频文件和视频
     remove(audio_filename)
