@@ -153,13 +153,16 @@ if __name__ == '__main__':
     audio = AudioFileClip(audio_filename)
     video1 = VideoFileClip(screen_video_filename)
     ratio1 = audio.duration/video1.duration
+    print("时间",video1.duration)
     video1 = (video1.fl_time(lambda t: t/ratio1, apply_to=['video']).set_end(audio.duration))
     # video2 = VideoFileClip(webcam_video_filename)
     # ratio2 = audio.duration/video2.duration
     # video2 = (video2.fl_time(lambda t: t/ratio2, apply_to=['video'])).set_end(audio.duration).resize((320, 240)).set_position(('right','bottom'))
     # video = CompositeVideoClip([video1, video2]).set_audio(audio)
     video = CompositeVideoClip([video1]).set_audio(audio)
-    video.write_videofile(video_filename, codec='libx264',threads = CPU_COUNT, fps=30)
+    video.write_videofile(video_filename, codec='libx264', threads = CPU_COUNT, fps=30)
+    # 设置码率可以调视频的大小 bitrate
+    # video.write_videofile(video_filename, codec='libx264',bitrate="2000k", threads = CPU_COUNT, fps=30)
 
     # 删除历史音频文件和视频
     remove(audio_filename)
