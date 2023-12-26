@@ -9,15 +9,16 @@ from numpy import array
 import cv2
 from moviepy.editor import *
 import os
-import win32api
+# import win32api
 import time
-
+from multiprocessing import cpu_count
 
 CHUNK_SIZE = 1024
 CHANNELS = 2
 FORMAT = pyaudio.paInt16
 RATE = 48000
 allowRecording = True
+CPU_COUNT = cpu_count() -2
 
 event = threading.Event()
 path = './video'
@@ -116,7 +117,7 @@ if __name__ == '__main__':
     audio_filename = f'./video/{now}.mp3'
     # webcam_video_filename = f'./video/t{now}.avi'
     screen_video_filename = f'./video/tt{now}.avi'
-    video_filename = f'./video/{now}.avi'
+    video_filename = f'./video/{now}.mp4'
     # 创建两个线程， 分别录音与录屏
     t1 = threading.Thread(target=record_audio)
     t2 = threading.Thread(target=record_screen)
@@ -125,7 +126,7 @@ if __name__ == '__main__':
     # 创建时间，用户多个线程同步，等摄像头准备以后再一起等3秒开始录制
     event.clear()
 
-    print("按s键,回车后开始录制", time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
+    print("按s键,回车后开始录制")
     if input() == 's':
         event.set()
     # for t in (t1, t2, t3):
@@ -135,7 +136,7 @@ if __name__ == '__main__':
 
     # 等待摄像头准备好，提示用户3秒钟以后开始录制
     event.wait()
-    print('再在录制中...')
+    print('正在录制中...',time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
     print('按q键结束录制')
 
     while True:
@@ -158,7 +159,7 @@ if __name__ == '__main__':
     # video2 = (video2.fl_time(lambda t: t/ratio2, apply_to=['video'])).set_end(audio.duration).resize((320, 240)).set_position(('right','bottom'))
     # video = CompositeVideoClip([video1, video2]).set_audio(audio)
     video = CompositeVideoClip([video1]).set_audio(audio)
-    video.write_videofile(video_filename, codec='libx264',threads = 10, fps=30)
+    video.write_videofile(video_filename, codec='libx264',threads = CPU_COUNT, fps=30)
 
     # 删除历史音频文件和视频
     remove(audio_filename)
