@@ -19,7 +19,7 @@ FORMAT = pyaudio.paInt16
 RATE = 48000
 allowRecording = True
 CPU_COUNT = cpu_count() -2
-
+num = 0
 event = threading.Event()
 path = './video'
 
@@ -112,12 +112,15 @@ def record_webcam():
     aviFile.release()
     cap.release()
 
-num = 0
 def keepTime():
-    while  True:
+    while allowRecording:
         sleep(1)
+        global num
         num+=1
-        print('\r',num,end='',flush=True)
+        m = num // 60
+        s = num % 60
+        ms = ((str(m)+"分") + (str(s) +"秒")) if m > 0 else str(s)+"秒" 
+        print('\r', str(ms).ljust(20),end='',flush=True)
 
 
 if __name__ == '__main__':
@@ -139,7 +142,7 @@ if __name__ == '__main__':
     if input() == 's':
         event.set()
     # for t in (t1, t2, t3):
-    for t in (t1, t2):
+    for t in (t1, t2,t4):
         t.start()
 
 
@@ -155,7 +158,7 @@ if __name__ == '__main__':
 
     allowRecording = False
     # for t in (t1, t2, t3):
-    for t in (t1, t2):
+    for t in (t1, t2, t4):
         t.join()
 
     # 把录制的音频和屏幕截图合成视频文件

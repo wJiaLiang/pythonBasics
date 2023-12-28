@@ -10,4 +10,7 @@ num = 0
 while  True:
     sleep(1)
     num+=1
-    print('\r',num,end='',flush=True)
+    m = num // 60
+    s = num % 60
+    ms = ((str(m)+"分") + (str(s) +"秒")) if m > 0 else str(s)+"秒" 
+    print('\r', str(ms).ljust(10),end='',flush=True)
