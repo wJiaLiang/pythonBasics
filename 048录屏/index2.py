@@ -112,6 +112,14 @@ def record_webcam():
     aviFile.release()
     cap.release()
 
+num = 0
+def keepTime():
+    while  True:
+        sleep(1)
+        num+=1
+        print('\r',num,end='',flush=True)
+
+
 if __name__ == '__main__':
     now = str(datetime.now())[:19].replace(":", "_")
     audio_filename = f'./video/{now}.mp3'
@@ -122,6 +130,7 @@ if __name__ == '__main__':
     t1 = threading.Thread(target=record_audio)
     t2 = threading.Thread(target=record_screen)
     # t3 = threading.Thread(target=record_webcam)
+    t4 = threading.Thread(target=keepTime)
 
     # 创建时间，用户多个线程同步，等摄像头准备以后再一起等3秒开始录制
     event.clear()
