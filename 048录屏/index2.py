@@ -113,6 +113,8 @@ def record_webcam():
     cap.release()
 
 def keepTime():
+    event.wait()
+    sleep(3)
     while allowRecording:
         sleep(1)
         global num
@@ -120,7 +122,7 @@ def keepTime():
         m = num // 60
         s = num % 60
         ms = ((str(m)+"分") + (str(s) +"秒")) if m > 0 else str(s)+"秒" 
-        print('\r', str(ms).ljust(20),end='',flush=True)
+        print('\r', '录制中：'+str(ms).ljust(20),end='',flush=True)
 
 
 if __name__ == '__main__':
@@ -138,18 +140,19 @@ if __name__ == '__main__':
     # 创建时间，用户多个线程同步，等摄像头准备以后再一起等3秒开始录制
     event.clear()
 
-    print("按s键,回车后开始录制")
-    if input() == 's':
-        event.set()
+    print("按s键,回车后开始录制，按q键，回车结束录制")
+    while True:
+        if input() == 's':
+            event.set()
+            break;
     # for t in (t1, t2, t3):
-    for t in (t1, t2,t4):
+    for t in (t1,t2,t4):
         t.start()
 
 
     # 等待摄像头准备好，提示用户3秒钟以后开始录制
     event.wait()
-    print('正在录制中...',time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
-    print('按q键结束录制')
+    print('3秒后开始录制......',time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
 
     while True:
         if input() == 'q':
@@ -161,18 +164,19 @@ if __name__ == '__main__':
     for t in (t1, t2, t4):
         t.join()
 
+    print("\n--------音视频合成中......")
     # 把录制的音频和屏幕截图合成视频文件
     audio = AudioFileClip(audio_filename)
     video1 = VideoFileClip(screen_video_filename)
     ratio1 = audio.duration/video1.duration
-    print("时间",video1.duration)
     video1 = (video1.fl_time(lambda t: t/ratio1, apply_to=['video']).set_end(audio.duration))
     # video2 = VideoFileClip(webcam_video_filename)
     # ratio2 = audio.duration/video2.duration
     # video2 = (video2.fl_time(lambda t: t/ratio2, apply_to=['video'])).set_end(audio.duration).resize((320, 240)).set_position(('right','bottom'))
     # video = CompositeVideoClip([video1, video2]).set_audio(audio)
     video = CompositeVideoClip([video1]).set_audio(audio)
-    video.write_videofile(video_filename, codec='libx264', threads = CPU_COUNT, fps=30)
+    video.write_videofile(video_filename, codec='libx264',threads = CPU_COUNT, fps=30)
+
     # 设置码率可以调视频的大小 bitrate
     # video.write_videofile(video_filename, codec='libx264',bitrate="2000k", threads = CPU_COUNT, fps=30)
 
@@ -180,3 +184,4 @@ if __name__ == '__main__':
     remove(audio_filename)
     remove(screen_video_filename)
     # remove(webcam_video_filename)
+    print("--------处理完成--------",video_filename)
