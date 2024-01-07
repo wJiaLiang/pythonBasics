@@ -31,34 +31,7 @@ def imshow(frame):
     # color = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
     cv2.imshow('v', frame)
     cv2.waitKey(40)
-
-def record_audio2():
-    # 实例化相关的对象
-    p = pyaudio.PyAudio()
-    event.wait()
-    sleep(3)
-    # 打开相关的流，然后传入响应参数
-    stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK_SIZE)
-    # 打开wav文件
-    wf = wave.open(audio_filename, 'wb')
-    # 设置相关的声道
-    wf.setnchannels(CHANNELS)
-    # 设置采样位数
-    wf.setsampwidth(p.get_sample_size((FORMAT)))
-    # 设置采样频率
-    wf.setframerate(RATE)
-
-    while allowRecording:
-        data = stream.read(CHUNK_SIZE)
-        # 写入数据
-        wf.writeframes(data)
-    
-    # 关闭流
-    stream.stop_stream()
-    stream.close()
-    p.terminate()
-    wf.close()
-
+ 
 def record_audio():
     p = pyaudio.PyAudio()
      #等待摄像头启动好，然后大家一起等3秒开始录制
@@ -79,8 +52,7 @@ def record_audio():
     stream.close()
     p.terminate()
     wf.close()
-
-    
+ 
 def record_screen():
      # 录制屏幕
      # 等待摄像头启动好，然后大家一起等3秒开始录制
@@ -126,7 +98,7 @@ def keepTime():
 
 
 if __name__ == '__main__':
-    now = str(datetime.now())[:19].replace(":", "_")
+    now = str(datetime.now())[:19].replace(":", "_") 
     audio_filename = f'./video/{now}.mp3'
     # webcam_video_filename = f'./video/t{now}.avi'
     screen_video_filename = f'./video/tt{now}.avi'
